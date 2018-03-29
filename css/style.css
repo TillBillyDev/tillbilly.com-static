@@ -1,0 +1,194 @@
+/*
+Theme Name: TillBilly
+Author: Aditya Moghe
+Description: Styles for TillBilly Landing
+Version: 1.0.0
+*/
+
+/**
+* General styles (boilerplate)
+* -------------------------------------------------------------------------
+*/
+
+*{
+	outline: none;
+	/*-webkit-touch-callout: none;*/
+	-webkit-text-size-adjust: none;
+	-webkit-overflow-scrolling: touch;
+    font-family: 'Comfortaa', cursive;
+    -moz-box-sizing: border-box;
+         box-sizing: border-box;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+.float-right{
+    float:right;
+}
+
+.float-left{
+    float:left;
+}
+
+.clearfix{}
+
+.clearfix:after {
+   content: " ";
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+
+.align-center{
+    text-align: center;
+}
+
+.weight-400{
+    font-weight: 400;
+}
+
+.flex-box{
+    display: -webkit-flex;
+	display: flex;
+}
+
+.flex-center{
+    display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+			align-items: center;
+	-webkit-justify-content: center;
+			justify-content: center;
+}
+
+/**
+* Theme specific styles
+* -------------------------------------------------------------------------
+*/
+
+.color-blue{
+    color: #2DADD0;
+}
+
+/**
+* Header and splash box
+* -------------------------------------------------------------------------
+*/
+
+.home-header{
+    position: absolute;
+    width: 100%;
+    padding: 50px 50px 0;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    color: #fff;
+}
+
+.home-header > .left{
+    float: left;
+}
+
+.home-header > .right{
+    float: right;
+}
+
+.home-header .logo{
+    display: inline-block;
+    height: 30px;
+}
+
+.home-header .logo > img{
+    display: block;
+    height: 100%;
+    width: auto;
+}
+
+.home-header .nav-link{
+    display: inline-block;
+    line-height: 30px;
+    font-size: 14px;
+    margin-right: 25px;
+}
+
+.home-header .nav-link:last-of-type{
+    margin-right: 0;
+}
+
+.splash-box{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/splash-bg.png');
+    background-size: cover;
+    background-position: bottom center;
+    border-color: #000;
+}
+
+.splash-box > #splash-canvas{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.splash-box > .items{
+    color: #fff;
+    text-align: center;
+}
+
+.splash-box h1{
+    font-size: 7vh;
+    letter-spacing: 2vh;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.splash-box h4{
+    color: #2caad1;
+}
+
+/**
+* Sections 
+* -------------------------------------------------------------------------
+*/
+
+section{
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+/**
+* Standard animation styles 
+* -------------------------------------------------------------------------
+*/
+
+@-webkit-keyframes clockwise-rotation
+{
+    0%  { -webkit-transform: rotate(0deg); }
+    100%  { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes clockwise-rotation
+{
+    0%  { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+}
