@@ -1,109 +1,183 @@
 window.onload = function(){
     
-    RunSplashCanvas();
+    /**
+    * Menu overlay
+    */
+    (function(){
+        
+        var menu_desktop = document.getElementById('desktop-menu-btn'),
+            menu_mobile = document.getElementById('mobile-menu-btn'),
+            menu_overlay = document.getElementById('menu-overlay'),
+            menu_close = document.getElementById('menu-close');
+
+        menu_desktop.onclick = toggleMenu;
+        menu_mobile.onclick = toggleMenu;
+
+        menu_close.onclick = closeMenu;
+
+        function toggleMenu(e){
+            e.preventDefault();
+            if(!menu_overlay.classList.contains('open')){
+                menu_overlay.classList.add('open');
+            } else {
+                menu_overlay.classList.remove('open');
+            }
+        }
+
+        function closeMenu(e){
+            e.preventDefault();
+            menu_overlay.classList.remove('open');
+        }
+        
+    })();
+    
+    /**
+    * Benefits splash
+    */
+    (function(){
+        
+        var bgs = Array.prototype.slice.call(document.getElementsByClassName('opacity-anim')),
+            texts = Array.prototype.slice.call(document.getElementsByClassName('opacity-anim-text')),
+            current = 0,
+            max = bgs.length,
+            interval = 10000;
+        
+        if(bgs.length > 0){
+            setInterval(function(){
+                for(var i = 0; i < max; i++){
+                    if(current === i){
+                        bgs[i].style.opacity = 1;
+                        texts[i].style.opacity = 1;
+                    } else {
+                        bgs[i].style.opacity = 0;
+                        texts[i].style.opacity = 0;
+                    }
+                }
+                current = ++current % max;
+            }, interval);
+        }
+        
+    })();
+    
+    /*
+    * Learn more
+    */
+    (function(){
+        
+        var learn_more = document.getElementById('learn-more'),
+            below_fold = document.getElementById('below-fold');
+        
+        if(learn_more){
+            learn_more.onclick = function(e){
+                e.preventDefault();
+                if(window.innerWidth > 800){
+                    animScrollTo(window, below_fold.offsetTop, 600);
+                } else {
+                    animScrollTo(window, below_fold.offsetTop - 60, 600);
+                }
+            };
+        }
+        
+    })();
+    
+    /**
+    * Logo scroll
+    */
+    (function(){
+        
+        var logo = document.getElementById('logo');
+        
+        window.addEventListener('scroll', function(){
+            
+            var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if(scrollY > window.innerHeight){
+                logo.classList.add('collapsed');
+            } else {
+                logo.classList.remove('collapsed');
+            }
+            
+        });
+        
+    })();
+    
+    /**
+    * Animated scroll
+    */
+    function animScrollTo(element, to, duration){
+        
+        var start = element === window ? window.scrollY : element.scrollTop,
+            change = to - start,
+            increment = 20;
+        
+        var animateScroll = function(elapsedTime){
+            
+            elapsedTime += increment;
+            
+            var position = easeInOut(elapsedTime, start, change, duration);   
+            
+            if(element === window){
+                
+                window.scrollTo(0, position);
+                
+            } else {
+                
+                element.scrollTop = position; 
+                
+            }
+            
+            if (elapsedTime < duration){
+                
+                setTimeout(function(){
+                    
+                    animateScroll(elapsedTime);
+                    
+                }, increment);
+                
+            }
+            
+        };
+        
+        animateScroll(0);
+        
+    }
+    
+    function easeInOut(currentTime, start, change, duration){
+        currentTime /= duration / 2;
+        if (currentTime < 1) {
+            return change / 2 * currentTime * currentTime + start;
+        }
+        currentTime -= 1;
+        return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
+    }
+    
+    /**
+    * Site loader
+    */
+    (function(){
+        
+        var loader = document.getElementById('site-loader');
+        
+        if(loader){
+            loader.classList.add('stage1');
+            
+            setTimeout(function(){
+                loader.classList.add('stage2');
+            }, 200);
+            
+            setTimeout(function(){
+                loader.classList.add('stage3');
+            }, 400);
+            
+            setTimeout(function(){
+                loader.classList.add('stage4');
+            }, 600);
+            
+            setTimeout(function(){
+                loader.parentElement.removeChild(loader);
+            }, 1000);
+        }
+        
+    })();
     
 };
-
-(function(){
-    
-    var canvas, context,
-        particles, 
-        width, height, xmin, xmax,
-        visibility_range;
-    
-    function init(){
-        canvas = document.getElementById('splash-canvas');
-        context = canvas.getContext('2d');
-        setResize();
-        animate();
-    }
-    
-    function setResize(){
-        setup();
-        window.addEventListener('resize', setup);
-    }
-    
-    function setup(){
-        var parent = canvas.parentElement;
-        
-        width = canvas.width = parent.offsetWidth;
-        height = canvas.height = parent.offsetWidth;// Math.floor(window.innerHeight / 2);
-        
-        visibility_range = width / 4;
-        xmin = width / 2 - visibility_range;
-        xmax = width / 2 + visibility_range;
-        
-        context.fillStyle = "#fff";
-        
-        particles = [];
-        
-        var p = Math.floor(window.innerWidth * .15);
-        
-        for(var i = 0; i < p; i++){
-            particles.push( new Particle(Math.random() * .0009, Math.random() * .0009) );
-        }
-        
-    }
-    
-    function Particle(sx, sy){
-        this.x = 0;
-        this.y = 0;
-        this.opacity = 0;
-        this.centerX = width / 2 + (Math.floor(Math.random() * visibility_range ) - visibility_range);
-        this.centerY = Math.floor(Math.random() * height);
-        this.radiusX = width / 2 * Math.random();
-        this.radiusY = height / 2 * Math.random();
-        this.xangle =  2 * Math.PI * Math.random();
-        this.yangle =  2 * Math.PI * Math.random();
-        this.xspeed = sx;
-        this.yspeed = sy;
-        this.size = .5 + Math.random();
-    }
-    
-    function animate(){
-        
-        context.clearRect(0, 0, width, height);
-        
-        for(var i = 0; i < particles.length; i++){
-            
-            var p = particles[i];
-            
-            p.x = p.centerX + Math.cos(p.xangle) * p.radiusX;
-            p.y = p.centerY + Math.sin(p.yangle) * p.radiusY;
-            
-            context.save();
-            
-            context.beginPath();
-            
-            context.globalAlpha = getAlpha(p.x);
-            
-            context.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
-            context.fill();
-            
-            context.restore();
-            
-            p.xangle += p.xspeed;
-            p.yangle += p.yspeed;
-            
-        }
-        
-        requestAnimationFrame(animate);
-    }
-    
-    function getAlpha(x){
-        var alpha = 0;
-            
-        if(x < xmax && x > xmin){
-            alpha = 0.7 * (1 - Math.abs(x - width / 2) / (visibility_range));
-        }
-        
-        return alpha;
-    }
-    
-    function range(value, low1, high1, low2, high2) {
-        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-    };
-    
-    window.RunSplashCanvas = init;
-    
-})();
